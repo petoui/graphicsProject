@@ -4,7 +4,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-/* ---------------- BASIC SETUP ---------------- */
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xa0d8f0); // light sky
 
@@ -26,9 +26,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 2, 0);
 controls.enableDamping = true;
 
-/* ---------------- LIGHTING ---------------- */
 
-// ambient light for soft background illumination
 const ambient = new THREE.AmbientLight(0xffffff, 0.4);
 scene.add(ambient);
 
@@ -58,7 +56,7 @@ snowSpot.castShadow = true;
 scene.add(snowSpot);
 scene.add(snowSpot.target);
 
-/* ---------------- GROUND (Snow) ---------------- */
+//white ground 
 const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(50, 50),
     new THREE.MeshStandardMaterial({
@@ -71,11 +69,7 @@ ground.rotation.x = -Math.PI / 2;
 ground.receiveShadow = true;
 scene.add(ground);
 
-/* ============================================================
-   ---------------------- OBJECT BUILDERS ----------------------
-   ============================================================ */
-
-/* ---------- Snowman ---------- */
+//snowman
 function buildSnowman() {
     const snowMat = new THREE.MeshStandardMaterial({ 
         color: 0xffffff,
@@ -120,7 +114,6 @@ function buildSnowman() {
     return g;
 }
 
-/* ---------- Candy Cane ---------- */
 function buildCandyCane() {
     const cane = new THREE.Group();
 
@@ -172,7 +165,6 @@ function buildCandyCane() {
     return cane;
 }
 
-/* ---------- Present Gift Box ---------- */
 function buildPresent() {
     const gift = new THREE.Group();
 
@@ -199,7 +191,6 @@ function buildPresent() {
     return gift;
 }
 
-/* ---------- Tree ---------- */
 function buildTree() {
     const group = new THREE.Group();
 
@@ -234,7 +225,6 @@ function buildTree() {
     return group;
 }
 
-/* ---------- Extruded Gold Star ---------- */
 function buildStar() {
     const shape = new THREE.Shape();
     const outer = 0.5, inner = 0.2;
@@ -272,7 +262,6 @@ function buildStar() {
     return star;
 }
 
-/* ---------- Snowman Hat (LatheGeometry) ---------- */
 function buildSnowmanHat() {
     const profile = [];
 
@@ -295,7 +284,6 @@ function buildSnowmanHat() {
     return hat;
 }
 
-/* ---------- Snowflakes for snowfall ---------- */
 function buildSnowflake() {
     const geo = new THREE.IcosahedronGeometry(0.07, 1);
     const mat = new THREE.MeshStandardMaterial({
@@ -307,7 +295,6 @@ function buildSnowflake() {
     return new THREE.Mesh(geo, mat);
 }
 
-/* ---------------- ADD OBJECTS TO SCENE ---------------- */
 const tree = buildTree();
 tree.position.set(-3.5, 0, 0);
 scene.add(tree);
@@ -324,18 +311,17 @@ const present = buildPresent();
 present.position.set(-1.5, 0.5, 0);
 scene.add(present);
 
-/* ----- Star on Tree ----- */
+//star on tree
 const star = buildStar();
 star.position.set(-3.5, 3.7, 0);
 star.rotation.y = Math.PI / 4;
 scene.add(star);
 
-/* ----- Snowman Hat ----- */
+//snowman hat
 const hat = buildSnowmanHat();
 hat.position.set(1, 4.1, -1);
 scene.add(hat);
 
-/* ----- Snowfall System ----- */
 const snowflakes = [];
 for (let i = 0; i < 200; i++) {
     const f = buildSnowflake();
@@ -348,8 +334,6 @@ for (let i = 0; i < 200; i++) {
     scene.add(f);
     snowflakes.push(f);
 }
-
-/* ----- Snow Toggle (Press A) ----- */
 let snowEnabled = false;
 
 window.addEventListener("keydown", (e) => {
@@ -359,14 +343,12 @@ window.addEventListener("keydown", (e) => {
     }
 });
 
-/* ---------------- RESIZE ---------------- */
+// RESIZE
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-/* ---------------- ANIMATION LOOP ---------------- */
 renderer.setAnimationLoop(() => {
     controls.update();
 
